@@ -15,12 +15,10 @@ from pathlib import Path
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 import os
-import dotenv # <- New
+#import dotenv # <- New
 
 # Add .env variables anywhere before SECRET_KEY
-dotenv_file = os.path.join(BASE_DIR, ".env")
-if os.path.isfile(dotenv_file):
-    dotenv.load_dotenv(dotenv_file)
+
 
 
 
@@ -29,11 +27,10 @@ if os.path.isfile(dotenv_file):
 
 # SECURITY WARNING: keep the secret key used in production secret!
 
-SECRET_KEY = os.environ['SECRET_KEY']
-
+SECRET_KEY = 'django-insecure-)*lktp1_3**dzqn7q0o4&560_gm8)p&)yzm7#i)ifb@dyxe&bi'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-
+DATA_UPLOAD_MAX_MEMORY_SIZE = 167772160
 ALLOWED_HOSTS = [
     "0.0.0.0",
     "127.0.0.1",

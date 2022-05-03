@@ -24,9 +24,10 @@ class Clusters(models.Model):
         from sklearn import metrics
         from sklearn.feature_selection import SelectKBest   #for feature selection
         from sklearn.feature_selection import f_classif
-        
+        import hdfs3
         print("here2")
-        df_test = pd.read_json(df_test, orient='index')
+        
+        df_test = pd.read_csv('R:\REST API\API\get_data\TEST.csv')
         print("here3")
         
         categorical = df_test.select_dtypes(include =object)

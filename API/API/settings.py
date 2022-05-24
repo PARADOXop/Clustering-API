@@ -27,7 +27,7 @@ import os
 
 # SECURITY WARNING: keep the secret key used in production secret!
 
-SECRET_KEY = 'django-insecure-)*lktp1_3**dzqn7q0o4&560_gm8)p&)yzm7#i)ifb@dyxe&bi'
+SECRET_KEY = ' insert secret key'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 DATA_UPLOAD_MAX_MEMORY_SIZE = 167772160

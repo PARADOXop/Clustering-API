@@ -7,7 +7,7 @@ import json
 class Clusters(models.Model):
     
     @staticmethod
-    def getClusters(df_test):
+    def getClusters(df_test0):
         import matplotlib
         import matplotlib.pyplot as plt
         import pandas as pd
@@ -27,17 +27,13 @@ class Clusters(models.Model):
         import hdfs3
         print("here2")
         
-        df_test = pd.read_csv('R:\REST API\API\get_data\TEST.csv')
+        df_test = pd.DataFrame(df_test0)
         print("here3")
-        
+        print(df_test.columns)
         categorical = df_test.select_dtypes(include =object)
         numerical= df_test.select_dtypes(include =[np.float64,np.int64])
 
-        s = ['examide', 'citoglipton', 'glimepiride-pioglitazone', 'metformin-pioglitazone', 'metformin-rosiglitazone']
         
-    
-        df_test.drop(columns=s, inplace=True)
-
         df_test.replace('?', np.nan, inplace = True)
         
         
@@ -50,13 +46,9 @@ class Clusters(models.Model):
         
 
         # lets fill the nan value for test dataset
-        df_test['race'] = df_test['race'].fillna(df_test['race'].mode()[0])
-        df_test['weight'] = df_test['weight'].fillna(df_test['weight'].mode()[0])
-        df_test['payer_code'] = df_test['payer_code'].fillna(df_test['payer_code'].mode()[0])
-        df_test['medical_specialty'] = df_test['medical_specialty'].fillna(df_test['medical_specialty'].mode()[0])
-        df_test['diag_1'] = df_test['diag_1'].fillna(df_test['diag_1'].mode()[0])
-        df_test['diag_2'] = df_test['diag_2'].fillna(df_test['diag_2'].mode()[0])
-        df_test['diag_3'] = df_test['diag_3'].fillna(df_test['diag_3'].mode()[0])
+     
+        df_test['medical_specialty'] = df_test['medical_specialty'].fillna('3')
+                     
 
         df_test.drop_duplicates(inplace=True)
 
@@ -88,39 +80,11 @@ class Clusters(models.Model):
         df_test[numeric_cols[:-1]] = scaler.transform(df_test[numeric_cols[:-1]])
 
         
-        a = ['race',
- 'admission_type_id',
- 'payer_code',
- 'diag_1',
- 'diag_2',
- 'max_glu_serum',
- 'A1Cresult',
- 'nateglinide',
- 'chlorpropamide',
- 'glimepiride',
- 'acetohexamide',
- 'glipizide',
- 'glyburide',
- 'tolbutamide',
- 'rosiglitazone',
- 'acarbose',
- 'miglitol',
- 'troglitazone',
- 'tolazamide',
- 'insulin',
- 'glyburide-metformin',
- 'glipizide-metformin']
-
-        index_test = df_test['index']
-        df_test.drop(columns='index', inplace=True)
         
-        df_test.drop(columns= a, inplace=True)
-        best_cols = ['gender', 'age', 'weight', 'discharge_disposition_id',
-       'admission_source_id', 'time_in_hospital', 'medical_specialty',
-       'num_lab_procedures', 'num_procedures', 'num_medications',
-       'number_outpatient', 'number_emergency', 'number_inpatient',
-       'diag_3', 'number_diagnoses', 'metformin', 'repaglinide',
-       'pioglitazone', 'change', 'diabetesMed']
+
+        best_cols = ['time_in_hospital', 'medical_specialty', 'num_procedures',
+       'num_medications', 'number_outpatient', 'number_emergency',
+       'number_inpatient', 'number_diagnoses', 'change', 'diabetesMed']
         # Load from file
         with open('./get_data/pickle_model.pkl', 'rb') as file:
             pickle_model = pickle.load(file)
@@ -128,7 +92,7 @@ class Clusters(models.Model):
         Ypredict = pickle_model.predict(df_test[best_cols])
         lists = Ypredict.tolist()
         json_str = json.dumps(lists)
-       
+        print('done with the API')
                 
         
         return JsonResponse({"Cluster_no":json_str})
